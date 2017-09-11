@@ -7,46 +7,15 @@
 
     <description>Shiro安全配置</description>
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:cookie.properties"/>
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:shiro.properties"/>
     
-    <!-- Shiro权限过滤过滤器定义 -->
-    <bean name="shiroFilterChainDefinitions" class="java.lang.String">
-        <constructor-arg>
-            <value>
-                /error/** = anon,exec
-                /client/** = anon,exec
-                /styles/** = anon,exec
-                /images/** = anon,exec
-                /scripts/** = anon,exec
-                /pay/back/** = anon,exec
-                /video/** = anon,exec
-                /upload/** = anon,exec
-                /uploads/** = anon,exec
-                /fonts/** = anon,exec
-                /getAuthPrice/** = anon,exec
-                /common/login/submitlogin=authc,exec
-                /common/login/** = anon,exec
-                /common/showImg/** = anon,exec
-                /common/showFile/** = anon,exec
-                /brand/brandImage/** = anon,exec
-                /common/orderPayCallback/** = anon,exec
-                /common/dealerShoper/** = anon,exec
-                /common/crmLogin/** = anon,exec
-                /common/register/** = anon,exec
-                /common/suggestion/** = anon,exec
-                /common/forgotpass/** = anon,exec
-                /menu/** = authc,exec
-                /brand/** = authc,exec
-                /common/** = authc,exec
-            </value>
-        </constructor-arg>
-    </bean>
-
+    
     <!-- 安全认证过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/common/login"/>
-        <property name="unauthorizedUrl" value="/error/403"/>
-        <property name="successUrl" value="/admins/indexed/index"></property>
+        <property name="loginUrl" value="${shiro.loginUrl}"/>
+        <!-- <property name="unauthorizedUrl" value="https://localhost:3443/cas/login?service=http://localhost:8080/sso-node2/admins/indexes/index"/>
+        <property name="successUrl" value="/admins/indexed/index"></property> -->
         <property name="filters">
             <map>
                 <entry key="exec">
@@ -60,6 +29,8 @@
                 <entry key="roles">
                     <bean class="org.apache.shiro.web.filter.authz.RolesAuthorizationFilter"/>
                 </entry>
+                <entry key="casFilter" value-ref="casFilter" />
+                 <entry key="logout" value-ref="logout" />
             </map>
         </property>
         <property name="filterChainDefinitions">
@@ -76,10 +47,39 @@
                 /menu/** = authc,exec
                 /brand/** = authc,exec
                 /common/** = authc,exec
+                /shiro-cas = casFilter
+                /logout = logout
+                /admins/indexed/index = authc,exec
                 /admins/** = authc,exec
             </value>
         </property>
     </bean>
+    
+    
+    <bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
+        <!-- 配置验证错误时的失败页面 ，这里配置为登录页面 -->
+        <property name="failureUrl" value="${shiro.failureUrl}" />
+        <property name="successUrl" value="${shiro.successUrl}" />
+    </bean>
+    <!-- 退出登录过滤器 -->
+    <bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+        <property name="redirectUrl" value="${shiro.logoutUrl}" />
+    </bean>
+
+   <!-- 自定义casRealm -->
+    <bean id="casRealm" class="com.mark.demo.shiro.security.cas.MySqlCasRealm">
+        <property name="defaultRoles" value="ROLE_USER" />
+        <property name="casServerUrlPrefix" value="${shiro.cas.serverUrlPrefix}" />
+        <property name="casService" value="${shiro.cas.service}" />
+        <property name="credentialsMatcher" ref="userCredentialsMatcher"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="userMapper" ref="userMapper"></property>
+    </bean>
+    
+    <!-- 如果要实现cas的remember me的功能，需要用到下面这个bean，并设置到securityManager的subjectFactory中 -->
+    <bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory" />
+    
+    
 
     <!-- 定义授权缓存管理器 -->
     <bean id="shiroCacheManager" class="com.mark.demo.shiro.security.cache.RedisCacheManager"/>
@@ -89,11 +89,11 @@
     <bean id="userCredentialsMatcher" class="com.mark.demo.shiro.security.UserCredentialsMatcher"/>
 
     <!-- 系统安全认证 -->
-    <bean id="userAuthorizingRealm" class="com.mark.demo.shiro.security.MysqlRealm">
+    <!-- <bean id="userAuthorizingRealm" class="com.mark.demo.shiro.security.MysqlRealm">
         <property name="credentialsMatcher" ref="userCredentialsMatcher"/>
         <property name="sessionDAO" ref="sessionDAO"/>
         <property name="userMapper" ref="userMapper"></property>
-    </bean>
+    </bean> -->
 
     <!-- 自定义会话 -->
     <bean id="sessionDAO" class="com.mark.demo.shiro.security.session.RedisSessionDAO">
@@ -137,10 +137,11 @@
 
     <!-- 定义Shiro安全管理配置 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="userAuthorizingRealm"/>
+        <property name="realm" ref="casRealm"/>
         <property name="rememberMeManager" ref="rememberMeManager"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="cacheManager" ref="shiroCacheManager"/>
+        <property name="subjectFactory" ref="casSubjectFactory" />
         
     </bean>
 

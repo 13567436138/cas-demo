@@ -20,7 +20,7 @@ $(function(){
 	$.post(path+"/menu/getMenuTopLever",{}, function(data) {
 		dataTree=convertJson(data);
 		if(dataTree.code==403){
-			document.location=path+"/common/login"
+			document.location="https://127.0.0.1:3443/cas/login?service=http://127.0.0.1:8080/sso-node1/shiro-cas"
 		}
 		InitLeftMenu(dataTree);
 		tabClose();
