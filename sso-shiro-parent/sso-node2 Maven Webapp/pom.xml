@@ -1,21 +1,225 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mark.demo.sso</groupId>
+  <parent>
+  		<groupId>com.mark.demo.sso</groupId>
+  		<artifactId>sso-shiro-parent</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  </parent>
   <artifactId>sso-node2</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
   <name>sso-node2 Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+    	<dependency>    
+		      <groupId>org.jasig.cas.client</groupId>    
+		      <artifactId>cas-client-core</artifactId>
+		</dependency>  
+  		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-cas</artifactId>
+        </dependency>
+		<dependency>  
+          <groupId>org.springframework</groupId>  
+          <artifactId>spring-core</artifactId>  
+	    </dependency>  
+	    
+	    <dependency>  
+          <groupId>org.springframework</groupId>  
+          <artifactId>spring-beans</artifactId>  
+	    </dependency>  
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		</dependency>
+		
+		<dependency>  
+          <groupId>org.springframework</groupId>  
+          <artifactId>spring-context</artifactId>  
+	    </dependency>  
+	      
+	    <!-- spring 附加功能包 -->  
+	    <dependency>  
+	        <groupId>org.springframework</groupId>  
+	        <artifactId>spring-webmvc</artifactId>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>org.springframework</groupId>  
+	        <artifactId>spring-tx</artifactId>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>org.springframework</groupId>  
+	        <artifactId>spring-jdbc</artifactId>  
+	    </dependency>  
+	    
+	     <!-- AspectJ -->  
+	    <dependency>  
+	        <groupId>org.aspectj</groupId>  
+	        <artifactId>aspectjrt</artifactId>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>org.aspectj</groupId>  
+	        <artifactId>aspectjweaver</artifactId>  
+	    </dependency> 
+	    
+		    
+		    <!-- Servlet -->  
+	    <dependency>  
+	        <groupId>javax.servlet</groupId>  
+	        <artifactId>javax.servlet-api</artifactId>
+	    </dependency>  
+	    <dependency>  
+	        <groupId>javax.servlet.jsp</groupId>  
+	        <artifactId>jsp-api</artifactId>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>javax.servlet</groupId>  
+	        <artifactId>jstl</artifactId>  
+	    </dependency>  
+	    
+	     <!-- slf4j --> 
+	    <dependency>  
+	        <groupId>org.slf4j</groupId>  
+	        <artifactId>slf4j-api</artifactId>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>org.slf4j</groupId>  
+	        <artifactId>slf4j-log4j12</artifactId>  
+	    </dependency>  
+	    <dependency>  
+	        <groupId>log4j</groupId>  
+	        <artifactId>log4j</artifactId>  
+	    </dependency> 
+	    <dependency>
+		    <groupId>redis.clients</groupId>
+		    <artifactId>jedis</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <!--mybatis-spring适配器 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+        <dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>druid</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.jsoup</groupId>
+		    <artifactId>jsoup</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>commons-beanutils</groupId>
+		    <artifactId>commons-beanutils</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>commons-validator</groupId>
+		    <artifactId>commons-validator</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>javax.validation</groupId>
+		    <artifactId>validation-api</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.code.kaptcha</groupId>
+		    <artifactId>kaptcha</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.freemarker</groupId>
+		    <artifactId>freemarker</artifactId>
+		</dependency>
   </dependencies>
   <build>
-    <finalName>sso-node2</finalName>
+  		<finalName>sso-node2</finalName>
+  		<resources>
+	       <resource>
+	           <directory>src/main/resources</directory>
+	           <includes>
+	               <include>**/*.xml</include>
+	               <include>**/*.properties</include>
+	           </includes>
+	           <filtering>true</filtering>
+	       </resource>
+	   </resources>
+	   <pluginManagement>
+	   		<plugins>
+		    	<plugin>  
+		            <groupId>org.apache.maven.plugins</groupId>  
+		            <artifactId>maven-compiler-plugin</artifactId>  
+		        </plugin>
+		        <plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+				</plugin>
+				<plugin>  
+		         <groupId>org.apache.maven.plugins</groupId>  
+		         <artifactId>maven-resources-plugin</artifactId>
+		  
+		         </plugin>  
+		    </plugins>
+	   </pluginManagement>
   </build>
+  
+  <repositories>
+  	<repository>
+  		<id>jahia</id>
+  		<releases><enabled>true</enabled></releases>
+  		<url>http://maven.jahia.org/maven2/</url>
+  	</repository>
+  </repositories>
 </project>
